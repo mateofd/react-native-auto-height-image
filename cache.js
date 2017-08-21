@@ -46,8 +46,14 @@ export const getImageSizeFitWidthFromCache = (imageURL, toWidth) => {
 const getImageSizeMaybeFromCache = async(imageURL) => {
     let size = getImageSizeFromCache(imageURL);
     if (!size) {
-        size = await loadImageSize(imageURL);
-        cache.set(imageURL, size);
+        try {
+            size = await loadImageSize(imageURL);    
+        } catch (error) {
+            size = 0
+        }
+        finally {
+            cache.set(imageURL, size);            
+        }
     }
     return size;
 };
